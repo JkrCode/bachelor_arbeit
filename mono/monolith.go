@@ -1,14 +1,18 @@
-// main.go
 package main
 
 import (
 	"fmt"
-	"os"
+	"net/http"
 	"time"
 )
 
+func greet(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World! %s", time.Now())
+	fmt.Println("enpoint was hit")
+}
+
 func main() {
-    hostname, _ := os.Hostname()
-    fmt.Printf("Hello from monolith executable! Running on: %s\n", hostname)
-    fmt.Printf("Started at: %s\n", time.Now().Format(time.RFC1123))
+	http.HandleFunc("/", greet)
+	fmt.Println("starting on 8080")
+	http.ListenAndServe(":8080", nil)
 }
